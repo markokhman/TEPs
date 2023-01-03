@@ -22,7 +22,7 @@ The introduced implementation of WTON contract is secure, efficient and meant to
 
 Interaction with different kinds of assets requires additional conditional logic. To avoid that and unify interaction between TON and jettons of TEP-74 and TEP-89 standards, we introduce a jetton that is locking TON 1-to-1 on mint and releases TON on burn.
 
-Implementation of a wrapped TON contract doesnt require a lot of effort. As a matter of fact, several implementations already exist. The problem is that numerous different wrapped TONs (wTON, jTON etc) created by different developers bare lots of risks:
+Implementation of a wrapped TON contract doesn't require a lot of effort. As a matter of fact, several implementations already exist. The problem is that numerous different wrapped TONs (wTON, jTON etc) created by different developers bare lots of risks:
 
 - **Financial risks:** there is no guarantee that a particular WTON doesn't hold security vulnerabilities left deliberately or by mistake. Getting security audits and certifications of the same quality for all the many WTONs is unrealistic.
 - **Ecosystem fragmentation and no single API:** this is a real problem for developers who are building products that will have to use a variety of WTONs. Imagine a wallet developer who wants to correctly display the total amount of WTON, including regular and all kinds of wrapped ones.
@@ -38,7 +38,7 @@ Two core functionalities of WTON are **wrapping** and **unwrapping** TON.
 
 ### Wrapping
 
-In order to wrap WTON, send a `mint` operation code with a message. WTON minter will reserve `amount + minimal_balance()` TON on the minter contract and will send the rest to a WTON wallet of `recipient` within `internal_transfer` message.
+In order to wrap TON to WTON jettons, send a `mint` operation code with a message. WTON minter will reserve `amount + minimal_balance()` TON on the minter contract and will send the rest to a WTON wallet of `recipient` within `internal_transfer` message.
 
 One of the most important things is the ability to attach `forward_amount` and `forward_payload` to build a pipeline of transactions.
 
@@ -66,9 +66,9 @@ The message with `burn` operation should be rejected if:
 
 # Specification
 
-The standart deployed WTON implementation is fully compatible with [TEP-74](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md) and [TEP-89](https://github.com/ton-blockchain/TEPs/blob/master/text/0089-jetton-wallet-discovery.md) standards.
+The standard deployed WTON implementation is fully compatible with [TEP-74](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md) and [TEP-89](https://github.com/ton-blockchain/TEPs/blob/master/text/0089-jetton-wallet-discovery.md) standards.
 
-Specific operations inroduced in this implementation:
+Specific operations introduced in this implementation:
 
 ```tl-b
 burn_notification_ext#84106950 query_id:uint64 amount:Coins
@@ -89,7 +89,7 @@ The implemented solution is quite straight forward from the technical perspectiv
 This is a serious optimisation of work for the developers who build products with TON to jetton trades usecases. However, there are some drawbacks from the perspective of the end users:
 
 1. A trade of TON to any jetton and vise versa with use of WTON ends up as a longer chain of transactions, thus becoming more expensive and less friendly for tracking.
-2. A non-educated end user might be seriously confused once he receives WTONs. This might be a crutial point for the mass addoption.
+2. A non-educated end user might be seriously confused once he receives WTONs. This might be a crucial point for the mass adoption.
 
 # Rationale and alternatives
 
@@ -97,7 +97,7 @@ As discussed above, our approach has a very strong advantage of enabling a pipel
 
 **Classic example with a decentralized exchange (DEX):** When user wants to trade TON to some jetton, he will send TONs to the WTON minter and the WTON will be minted directly to the DEX's WTON wallet along with `forward_amount` and `forward_payload` that would contain the end-users wallet address. This way DEX will know whom to send jettons and will have enough funds to complete this internal transfer of jettons.
 
-Our solution is also rewerse compatible - so anybody who wants to wrap their TON and trade directly WTON to jettons to slightly reduce the transactions cost can do this with accordance to TEP-74/TEP-89 jetton standard.
+Our solution is also reverse compatible - so anybody who wants to wrap their TON and trade directly WTON to jettons to slightly reduce the transactions cost can do this with accordance to TEP-74/TEP-89 jetton standard.
 
 We've discussed other 2 ways to implement the minting process of WTON:
 
@@ -112,7 +112,7 @@ We can reference to a similar problem and solution approach on Ethereum blockcha
 
 Let's look at the example of the one of the most popular Ethereum exchange protocol - Uniswap.
 
-Uniswap v1 used ETH as a bridge currency. Every pair included ETH as one of its assets. This makes routing simpler—every trade between ABC and XYZ goes through the ETH/ABC pair and the ETH/XYZ pair—and reduces fragmentation of liquidity. However, this rule imposes significant costs on liquidity providers. Using ETH asо a mandatory bridge currency also imposes costs on traders. Traders have to pay twice as much in fees as they would on a direct ABC/XYZ pair, and they suffer slippage twice.
+Uniswap v1 used ETH as a bridge currency. Every pair included ETH as one of its assets. This makes routing simpler—every trade between ABC and XYZ goes through the ETH/ABC pair and the ETH/XYZ pair—and reduces fragmentation of liquidity. However, this rule imposes significant costs on liquidity providers. Using ETH as a mandatory bridge currency also imposes costs on traders. Traders have to pay twice as much in fees as they would on a direct ABC/XYZ pair, and they suffer slippage twice.
 
 Uniswap v2 excluded support of unwrapped ETH, which enabled it to support any arbitrary ERC-20 pairs. The native ETH needs to be wrapped into WETH before it can be traded on Uniswap v2.
 
